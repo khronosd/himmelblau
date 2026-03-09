@@ -92,6 +92,13 @@ in
   };
 
   config = lib.mkIf cfg.enable {
+    assertions = [
+      {
+        assertion = cfg.settings.domain != null && cfg.settings.domain != [ ];
+        message = "services.himmelblau.settings.domain must be set to at least one domain when services.himmelblau.enable = true.";
+      }
+    ];
+
     environment.etc."krb5.conf.d/krb5_himmelblau.conf".source = ../../src/config/krb5_himmelblau.conf;
     environment.etc."himmelblau/himmelblau.conf".source = configFile;
 
